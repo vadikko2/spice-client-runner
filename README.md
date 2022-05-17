@@ -11,3 +11,11 @@ optional arguments:
   -s SUFFIX, --suffix SUFFIX
                         SPICE file suffix. By default ".vv"
 ```
+
+#### For enable to launchd do:
+- Fix `.plist` file
+- `launchctl bootstrap gui/<UID> <PATH_TO FILE>`. For get UID do `id -u`
+- check service by `launchctl list | grep spice`. this will return a line like this: `<pid> <status> spice.client`.
+
+#### For disable do:
+- `launchctl bootout gui/<UID> <PATH_TO_FILE>`  

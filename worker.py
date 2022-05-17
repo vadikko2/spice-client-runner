@@ -12,7 +12,7 @@ class SPICEWorker(Thread, Logging):
     def __init__(self, filename: Path):
         super().__init__()
         self._filename = filename
-        self._cmd = SPICEWorker.COMMAND + [self._filename, ]
+        self._cmd = SPICEWorker.COMMAND + [str(self._filename), ]
 
     def __repr__(self):
         return '%s (%s)' % (self.name, self.cmd)
