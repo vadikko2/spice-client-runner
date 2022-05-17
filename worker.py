@@ -23,7 +23,7 @@ class SPICEWorker(Thread, Logging):
 
     def run(self) -> None:
         try:
-            SPICEWorker.logger.log(logging.INFO, '%s started' % self)
+            self.info('%s started' % self)
             process = subprocess.Popen(self._cmd)
             process.communicate()
             # keep checking stdout/stderr until the child exits
@@ -32,13 +32,13 @@ class SPICEWorker(Thread, Logging):
 
             return process.returncode
         finally:
-            SPICEWorker.logger.log(logging.INFO, '%s stopped' % self)
+            self.info('%s stopped' % self)
 
     @staticmethod
     def check_io(process):
         while True:
             output = process.stdout.readline().decode()
             if output:
-                SPICEWorker.logger.log(logging.INFO, output)
+                SPICEWorker.info(output)
             else:
                 break

@@ -1,4 +1,3 @@
-import logging
 import os
 from pathlib import Path
 from time import time, sleep
@@ -13,10 +12,10 @@ class DirUpdatesObserver(Logging):
     def __init__(self, worker_class: Type[SPICEWorker], dir: Path, suffix: str):
         self._worker_class = worker_class
         if not suffix.startswith('.'):
-            self.logger.log(logging.ERROR, 'Suffix must starts with "."')
+            self.error('Suffix must starts with "."')
             raise ValueError
         if not dir.exists():
-            self.logger.log(logging.ERROR, 'The directory %s does not exists' % dir)
+            self.error('The directory %s does not exists' % dir)
             raise ValueError
         self._dir = dir
 
@@ -33,12 +32,12 @@ class DirUpdatesObserver(Logging):
             sleep(1)
 
     def listen(self):
-        self.logger.log(logging.INFO, 'Listening %s directory has been started' % self._dir)
+        self.info('Listening %s directory has been started' % self._dir)
         try:
             for filename in self.get_dir_updates():
                 worker = self._worker_class(filename=filename)
                 worker.start()
         except (Exception, KeyboardInterrupt) as e:
-            self.logger.log(logging.ERROR, 'Listening %s has been raised with exception: %s' % (self._dir, e))
+            self.error('Listening %s has been raised with exception: %s' % (self._dir, e))
         finally:
-            self.logger.log(logging.INFO, 'Listening %s directory has been stopped' % self._dir)
+            self.info('Listening %s directory has been stopped' % self._dir)
